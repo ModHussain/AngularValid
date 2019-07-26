@@ -1,21 +1,136 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 offset-sm-3">
+        <h1>Form Validations</h1>
+        <div *ngIf='bool' >Thank you for registering with us, {{users[users.length - 1].first_name}}
+          We just send a confirmation email to {{users[users.length - 1].email}} and we will send all mail to 
+          {{users[users.length - 1].street_address}}, {{users[users.length - 1].unit}} {{users[users.length - 1].city}} 
+          {{users[users.length - 1].state}}
+        </div>
+      
+        <form name = 'register' (submit)="onSubmit()" #form='ngForm'>
+         
+              First Name : 
+              <input 
+                type="text" 
+                name="first_name" 
+                required 
+                [(ngModel)]="user.first_name"
+                #first_name='ngModel'
+                class="form-control"
+              />
+              
+              <!-- <div class = 'side'*ngIf='!first_name.valid'>First name is Required</div><br> -->
+              <div class = 'side' *ngIf='(first_name.touched || first_name.dirty) && first_name.invalid'>First name is Required</div><br>
+              
+    
+    
+              Last Name :
+              <input 
+                type="text" 
+                name="last_name" 
+                required 
+                [(ngModel)]="user.last_name"
+                #last_name='ngModel'
+                class="form-control"
+              />
+              <div class = 'side' *ngIf='(last_name.touched || last_name.dirty) && last_name.invalid'>Last Name is Required</div><BR>
+      
+              Email : 
+              <input 
+              type="email" 
+              name="email" 
+              required 
+              pattern = "\S+@\S+\.\S+"
+              [(ngModel)]="user.email"
+              #email='ngModel'
+              class="form-control"
+                />
+         
+              <div class = 'side' *ngIf='(email.touched || email.dirty) && email.invalid'>Valid Email is Required</div><BR>
+              <!-- {{email.errors|json}} -->
+      
+            Password : 
+            <input 
+            type="text"  
+            name="password" 
+            required 
+            minlength="8"
+            [(ngModel)]="user.password"
+            #password='ngModel'
+            class="form-control"
+             />
+            <div class = 'side' *ngIf='(password.touched || password.dirty) && password.invalid'>Password must be at least 3 characters longs</div><BR>
+            
+            <!-- {{password.value}}<br> -->
+            Password Conf: 
+            <input 
+            type="text"   
+            name="confPassword" 
+            required 
+            pattern = {{password.value}}
+            [(ngModel)]="user.confPassword"
+            #confPassword='ngModel'
+            class="form-control"
+             />
+            <div class = 'side' *ngIf='password.value != confPassword.value'>Passwords must match</div><br>
+            <!-- {{confPassword.valid}} -->
+      
+            Street Address : 
+            <input 
+            type="text" 
+            name="street_address" 
+            required 
+            [(ngModel)]="user.street_address"
+            #street_address='ngModel'
+            class="form-control"
+            />
+            <div class = 'side' *ngIf='(street_address.touched || street_address.dirty) && street_address.invalid'>Street Address is Required</div><BR>
+      
+            Unit : 
+            <input 
+            type="text" 
+            name="unit" 
+            [(ngModel)]="user.unit"
+            class="form-control"
+            />
+            <br>
+          <!-- no vaildation needed for unit -->
+      
+            City : 
+            <input 
+            type="text" 
+            name="city" 
+            required 
+            [(ngModel)]="user.city"
+            #city='ngModel'
+            class="form-control"
+            />
+            <div class = 'side' *ngIf='(city.touched || city.dirty) && city.invalid'>City is Required</div><BR>
+            State : 
+             <select type = 'text' name="state" class="form-control" [(ngModel)]="user.state">
+              <option value="WA">WA</option>
+              <option value="NY">NY</option>
+              <option value="OR">OR</option>
+            </select>
+            <!-- <div class = 'side' *ngIf='!state.valid'>State is Required</div><BR> -->
+            <!-- no validation needed for state -->
+            <BR>
+            Are you feeling lucky? 
+            Yes <input type = "radio" name = "lucky" required [(ngModel)]='user.lucky' #lucky='ngModel' value = 'yes'/>
+            No <input type = "radio" name = "lucky" required [(ngModel)]='user.lucky' #lucky='ngModel' value = 'no'/>
+            
+            <div class = 'side' *ngIf='!lucky.valid'>Choosing your luck is required</div><br>
+      
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Submit</button>
+              <!-- <div *ngIf='last_name.valid && first_name.valid && email.valid && password.valid && street_address.valid'><input type="submit"></div> -->
+          </form>
+            <!-- {{user | json}}  -->
+    </div>
+  </div>
+    
+        
+    
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
 <router-outlet></router-outlet>

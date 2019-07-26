@@ -1,0 +1,26 @@
+.block{
+    height: 100px;
+    width: 100px;
+    outline-style: solid;
+    vertical-align: top;
+    display: inline-block;
+    background-color: green;
+}
+
+.off{background-color:red;}
+
+p{
+    color: brown;
+}
+
+.side{
+    display: inline-block;
+    padding: 5px;
+    background: #f8d7da;
+    width: 80%;
+    margin-top: 7px;
+    margin-bottom: 10px;
+    border: 1px solid red;
+    border-radius: 2px;
+    font-weight: 500;
+}
